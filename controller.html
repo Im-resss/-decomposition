@@ -1,0 +1,82 @@
+<!DOCTYPE>
+<html>
+<head>
+ <script>
+   	//---------------->>>>>>>>>>>>>>>>>>REQUEST1<<<<<<<<<<<<<<<<------------------------
+      var initData = {};
+      initData.req1 = false;
+      initData.req2 = false;
+      var req1;
+      var reqOutput1; 
+      var arrMain = new Array(); 
+     
+
+      req1=new XMLHttpRequest();
+      req1.onreadystatechange = function(){
+       if (this.readyState==4 && this.status==200) {
+         reqOutput1 = JSON.parse(req1.responseText);
+         initData.req1 = reqOutput1
+         for (var i = 0; i <203 ; i++) {
+            arrMain[i]=JSON.stringify(reqOutput1[i].code);
+         };
+         console.log(arrMain)
+         
+         go()        
+      };
+
+   }
+   req1.open("GET","maindata.json?=94",true);
+   req1.setRequestHeader("Content-type","application/json",true);
+   req1.send();
+   	//---------------------------------------//---------------------------------------//---------------------------------------//---------------------------------------
+   	//---------------->>>>>>>>>>>>>>>>>>REQUEST2<<<<<<<<<<<<<<<<------------------------
+   	var req2;
+   	var reqOutput2;
+      var arrChild= new Array() ;
+
+      req2=new XMLHttpRequest();
+      req2.onreadystatechange=function(){
+
+       if (this.readyState==4 && this.status==200) {
+         reqOutput2=JSON.parse(req2.responseText); 
+         initData.req2 = reqOutput2
+        for (var i = 0; i <477; i++) {
+           arrChild[i] = JSON.stringify(reqOutput2[i]);
+
+        };
+        console.log(arrChild)
+         go()
+         
+       
+    };
+
+ }
+ req2.open("GET","kontroledilecek.json?=19",true);
+ req2.setRequestHeader("Content-type","application/json",true);
+ req2.send();
+   	//---------------------------------------//---------------------------------------//---------------------------------------//---------------------------------------	
+      var arrResult=new Array() ;
+      function go() {
+        if(initData.req1 && initData.req2){
+         // ahanda
+         console.log("ikisi de geldi")}
+         Array.prototype.diff = function(a) {
+           return this.filter(function(i) {return a.indexOf(i) < 0;});
+        };
+       arrResult=arrChild.diff( arrMain ); 
+        console.log(arrResult)
+        var where = document.getElementById('list');
+        var what = document.createElement('li');
+        where.appendChild(what);
+        what.innerHTML = arrResult;
+        
+     }
+     </script>    
+  </head>
+  <body>     
+   
+      <ol id="list">
+      </ol>
+             	      
+</body>
+</html>
